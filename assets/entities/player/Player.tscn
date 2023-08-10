@@ -1,9 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dmyh6k12o3uxr"]
+[gd_scene load_steps=2 format=3 uid="uid://dmyh6k12o3uxr"]
 
 [ext_resource type="Script" path="res://assets/entities/player/Player.cs" id="1_duria"]
-[ext_resource type="Texture2D" uid="uid://cc8wrmjc60lo4" path="res://icon.svg" id="2_552w1"]
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_duria")
-colliderShape = Vector2i(12, 12)
-texture = ExtResource("2_552w1")
+colliderShape = Vector2(12, 12)

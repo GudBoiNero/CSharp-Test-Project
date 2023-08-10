@@ -4,23 +4,26 @@ using System;
 public partial class Force : Resource
 {
     public Vector2 direction;
+
     public double speed;
     public double initialSpeed;
+
     public double decay;
-    public bool canDecay = true;
+    public bool canDecay;
+
     public double accel;
-    public bool canAccel = true;
+    public bool canAccel;
+
     public float minSpeed;
     public float maxSpeed;
 
     public Force(
-        Vector2 direction, 
+        Vector2 direction,
         float initialSpeed,
-        
         double decay = 0.1, bool canDecay = false,
-        double accel = 0.0, bool canAccel = true,
-
+        double accel = 0.0, bool canAccel = false,
         float minSpeed = float.MinValue, float maxSpeed = float.MaxValue
+
     )
     {
         this.direction = direction;
@@ -40,6 +43,11 @@ public partial class Force : Resource
         if (canDecay) speed -= speed * decay;
         if (canAccel) speed += speed * accel;
         speed = Math.Clamp(speed, minSpeed, maxSpeed);
+    }
+
+    public void ResetForce()
+    {
+        speed = initialSpeed;
     }
 
     public Vector2 GetVelocity(bool tick = false, bool normalized = true)
