@@ -20,10 +20,9 @@ public partial class Force : Resource
     public Force(
         Vector2 direction,
         float initialSpeed,
-        double decay = 0.1, bool canDecay = false,
+        double decay = 0.0, bool canDecay = false,
         double accel = 0.0, bool canAccel = false,
         float minSpeed = float.MinValue, float maxSpeed = float.MaxValue
-
     )
     {
         this.direction = direction;
