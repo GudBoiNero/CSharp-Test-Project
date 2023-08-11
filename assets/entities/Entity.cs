@@ -5,46 +5,26 @@ using System.Collections.Generic;
 
 public partial class Entity : CharacterBody2D
 {
-    [ExportGroup("Collider")]
     [Export]
-    public Vector2 colliderShape = new(0, 0);
+    public Sprite2D sprite;
     [Export]
-    public Vector2 colliderOffset = new(0, 0);
-    readonly public CollisionShape2D collider = new();
-
-    [ExportGroup("Sprite")]
-    [Export]
-    public Texture2D texture;
-    [Export]
-    public Vector2 spriteScale = new(1, 1);
-    readonly public Sprite2D sprite = new();
+    public CollisionShape2D collider;
 
     readonly public List<Force> forces = new();
+    readonly public Force gravity;
 
-    [Export]
-    public Force gravity;
-
-    public Entity() 
-    { 
-        gravity = new(new(0, 1f), initialSpeed: 40f, accel: 0.35f, canAccel: true, maxSpeed: 800f);
+    public Entity() {
+        gravity = new(this, new(0, 1f), initialSpeed: 20f, accel: 0.35f, canAccel: true, maxSpeed: 800f);
     }
 
     public override void _Ready()
     {
-        RectangleShape2D colliderRect = new()
-        {
-            Size = colliderShape
-        };
-
-        collider.Shape = colliderRect;
-        collider.Position = colliderOffset;
-        collider.DebugColor = new(0.6f, 0.25f, 0.5f, 0.41f);
-        collider.ZIndex = 1;
-        AddChild(collider);
-
-        sprite.Texture = texture;
-        sprite.Scale = spriteScale;
-        AddChild(sprite);
+        if (!IsInstanceValid(sprite)) throw new("`sprite` is not a valid instance.");
+        if (!IsInstanceValid(collider)) throw new("`collider` is not a valid instance.");
+        else {
+            collider.DebugColor = new(0.6f, 0.25f, 0.5f, 0.41f);
+            collider.ZIndex = 1;
+        }
     }
 
     public override void _PhysicsProcess(double delta)
@@ -66,7 +46,7 @@ public partial class Entity : CharacterBody2D
         
         if (!IsOnFloor())
         {
-            velocity += gravity.GetVelocity(tick: true);
+            //velocity += gravity.GetVelocity(tick: true);
         }
         else
         {

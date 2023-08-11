@@ -3,6 +3,7 @@ using System;
 
 public partial class Force : Resource
 {
+    public Entity entity;
     public Vector2 direction;
 
     public double speed;
@@ -16,8 +17,11 @@ public partial class Force : Resource
 
     public float minSpeed;
     public float maxSpeed;
+    
+    public bool active = true;
 
     public Force(
+        Entity entity,
         Vector2 direction,
         float initialSpeed,
         double decay = 0.0, bool canDecay = false,
@@ -25,6 +29,7 @@ public partial class Force : Resource
         float minSpeed = float.MinValue, float maxSpeed = float.MaxValue
     )
     {
+        this.entity = entity;
         this.direction = direction;
         this.initialSpeed = initialSpeed;
         this.decay = decay;
@@ -39,9 +44,21 @@ public partial class Force : Resource
 
     private void Tick()
     {
+        if (ShouldDisable()) active = false;
+        if (!active) 
+        {
+            speed = 0.0;
+            return;
+        }
+
         if (canDecay) speed -= speed * decay;
         if (canAccel) speed += speed * accel;
         speed = Math.Clamp(speed, minSpeed, maxSpeed);
+    }
+
+    public virtual bool ShouldDisable()
+    {
+        return false;
     }
 
     public void ResetForce()
