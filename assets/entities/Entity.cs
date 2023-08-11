@@ -46,7 +46,7 @@ public partial class Entity : CharacterBody2D
         
         if (!IsOnFloor())
         {
-            //velocity += gravity.GetVelocity(tick: true);
+            velocity += gravity.GetVelocity(tick: true);
         }
         else
         {

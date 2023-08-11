@@ -15,7 +15,6 @@ public partial class Player : Entity
     public override void _PhysicsProcess(double delta)
     {
         if (Input.IsActionPressed("up") && CanJump()) Jump();
-        if (Input.IsActionPressed("down")) AddForce(new(this, Position.DirectionTo(GetGlobalMousePosition()), 10f));
 
         base._PhysicsProcess(delta);
     }
