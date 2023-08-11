@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dqb8mhpg7r3it"]
+[gd_scene load_steps=4 format=3 uid="uid://dqb8mhpg7r3it"]
 
 [ext_resource type="Script" path="res://World.cs" id="1_y7okj"]
 [ext_resource type="PackedScene" uid="uid://dmyh6k12o3uxr" path="res://assets/entities/player/Player.tscn" id="2_l4dwo"]
-[ext_resource type="Texture2D" uid="uid://cc8wrmjc60lo4" path="res://icon.svg" id="3_k8d4i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bmrbp"]
 size = Vector2(424, 20)
@@ -10,26 +9,18 @@ size = Vector2(424, 20)
 [node name="World" type="Node2D"]
 script = ExtResource("1_y7okj")
 
-[node name="Player" parent="." node_paths=PackedStringArray("jumpRaycasts") instance=ExtResource("2_l4dwo")]
-position = Vector2(188, 79)
-jumpRaycasts = []
+[node name="Player" parent="." instance=ExtResource("2_l4dwo")]
+position = Vector2(60, 56)
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(240, 204)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-shape = SubResource("RectangleShape2D_bmrbp")
-
-[node name="Sprite" type="Sprite2D" parent="StaticBody2D"]
-scale = Vector2(3.3125, 0.15625)
-texture = ExtResource("3_k8d4i")
-
-[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+[node name="Platforms" type="StaticBody2D" parent="."]
 position = Vector2(457, 171)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Platforms"]
+position = Vector2(-217, 33)
 shape = SubResource("RectangleShape2D_bmrbp")
 
-[node name="Sprite" type="Sprite2D" parent="StaticBody2D2"]
-scale = Vector2(3.3125, 0.15625)
-texture = ExtResource("3_k8d4i")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms"]
+shape = SubResource("RectangleShape2D_bmrbp")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platforms"]
+polygon = PackedVector2Array(-370, -88, -365, -65, -360, -54, -350, -41, -333, -28, -310, -15, -276, -8, -218, -4, -212, -10, -212, 10, -412, 10, -412, -93, -375, -93)

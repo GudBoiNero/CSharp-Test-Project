@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 
-public partial class Entity : CharacterBody2D
+public partial class Entity : RigidBody2D
 {
     [Export]
     public Sprite2D sprite;
@@ -11,11 +11,12 @@ public partial class Entity : CharacterBody2D
     public CollisionShape2D collider;
 
     readonly public List<Force> forces = new();
-    readonly public Force gravity;
 
-    public Entity() {
-        gravity = new(this, new(0, 1f), initialSpeed: 20f, accel: 0.35f, canAccel: true, maxSpeed: 800f);
-    }
+    private float gravity = 0.0f;
+    readonly public float gravitySpeed = 600f;
+    readonly public float gravityAccel = 0.10f;
+
+    public Entity() {}
 
     public override void _Ready()
     {
@@ -29,10 +30,13 @@ public partial class Entity : CharacterBody2D
 
     public override void _PhysicsProcess(double delta)
     {
+        gravity = Mathf.Lerp(gravity, gravitySpeed, gravityAccel);
+
+        Wait.For(this, 0.5f, () => {});
+
         Vector2 velocity = GetVelocity();
         GD.Print(forces.Count);
-        Velocity = velocity;
-        MoveAndSlide();
+        ApplyCentralForce(velocity);
     }
 
     public void AddForce(Force force)
@@ -40,18 +44,20 @@ public partial class Entity : CharacterBody2D
         forces.Add(force);
     }
 
+    public float GetGravity() {
+        return gravity;        
+    }
+
+    public void SetGravity(float gravity) {
+        this.gravity = gravity;
+    }
+
     public virtual Vector2 GetVelocity()
     {
         Vector2 velocity = new();
         
-        if (!IsOnFloor())
-        {
-            velocity += gravity.GetVelocity(tick: true);
-        }
-        else
-        {
-            gravity.ResetForce();
-        };
+        velocity.Y += GetGravity();
+        SetGravity(0);
 
         foreach (var force in forces)
         {
