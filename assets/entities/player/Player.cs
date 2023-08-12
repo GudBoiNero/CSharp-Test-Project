@@ -7,7 +7,7 @@ public partial class Player : Entity
     [Export]
     private float speed = 250f;
     [Export]
-    private float jumpSpeed = 1200f;
+    private float jumpSpeed = 600f;
     [Export]
     public RayCast2D[] jumpRaycasts;
 
@@ -16,6 +16,7 @@ public partial class Player : Entity
     readonly private float rotationAccel = 0.2f;
     readonly private float rotationSpeed = 0.25f;
     private float rotationVelocity = 0f;
+    private bool jumpOnCooldown = false;
     public override void _PhysicsProcess(double delta)
     {
         if (Input.IsActionPressed("up") && CanJump()) Jump();
@@ -24,10 +25,13 @@ public partial class Player : Entity
     }
 
     public void Jump() {
-        Force jumpForce = new(this, new(0, -1), jumpSpeed, decay: 0.1f, canDecay: true);
+        jumpOnCooldown = true;
+
+        Force jumpForce = new(this, new(0, -1), jumpSpeed, decay: 0.06f, canDecay: true);
         AddForce(jumpForce);
 
-        Wait.For(this, 0.5f, () => { forces.Remove(jumpForce); });
+        Wait.For(this, .6f, () => { jumpOnCooldown = false; });        
+        Wait.For(this, .5f, () => { forces.Remove(jumpForce); });
     }
 
     public int GetInputDirection()
@@ -42,7 +46,7 @@ public partial class Player : Entity
             if (ray.IsColliding()) raysTouching = true;
         }
 
-        return raysTouching;
+        return raysTouching && !jumpOnCooldown;
     }
 
     public override Vector2 GetVelocity()

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 
-public partial class Entity : RigidBody2D
+public partial class Entity : CharacterBody2D
 {
     [Export]
     public Sprite2D sprite;
@@ -36,7 +36,8 @@ public partial class Entity : RigidBody2D
 
         Vector2 velocity = GetVelocity();
         GD.Print(forces.Count);
-        ApplyCentralForce(velocity);
+        Velocity = velocity;
+        MoveAndSlide();
     }
 
     public void AddForce(Force force)
@@ -56,8 +57,14 @@ public partial class Entity : RigidBody2D
     {
         Vector2 velocity = new();
         
-        velocity.Y += GetGravity();
-        SetGravity(0);
+        if (!IsOnFloor())
+        {
+            velocity.Y += GetGravity();
+        }
+        else
+        {
+            SetGravity(0);
+        };
 
         foreach (var force in forces)
         {

@@ -3,9 +3,10 @@
 [ext_resource type="Script" path="res://assets/entities/player/Player.cs" id="1_duria"]
 [ext_resource type="Texture2D" uid="uid://cc8wrmjc60lo4" path="res://icon.svg" id="2_45t5s"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_a3cyr"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iktod"]
+size = Vector2(16, 16)
 
-[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("jumpRaycasts", "sprite", "collider")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("jumpRaycasts", "sprite", "collider")]
 script = ExtResource("1_duria")
 jumpRaycasts = [NodePath("JumpRaycast"), NodePath("JumpRaycast2"), NodePath("JumpRaycast3")]
 sprite = NodePath("Sprite")
@@ -16,15 +17,16 @@ scale = Vector2(0.15625, 0.15625)
 texture = ExtResource("2_45t5s")
 
 [node name="Collider" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_a3cyr")
+shape = SubResource("RectangleShape2D_iktod")
 
 [node name="JumpRaycast" type="RayCast2D" parent="."]
-target_position = Vector2(0, 20)
+position = Vector2(0, 8)
+target_position = Vector2(0, 5)
 
 [node name="JumpRaycast2" type="RayCast2D" parent="."]
-position = Vector2(7, 0)
-target_position = Vector2(0, 20)
+position = Vector2(7.3, 8)
+target_position = Vector2(0, 5)
 
 [node name="JumpRaycast3" type="RayCast2D" parent="."]
-position = Vector2(-7, 0)
-target_position = Vector2(0, 20)
+position = Vector2(-7.3, 8)
+target_position = Vector2(0, 5)

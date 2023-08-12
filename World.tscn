@@ -21,6 +21,3 @@ shape = SubResource("RectangleShape2D_bmrbp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms"]
 shape = SubResource("RectangleShape2D_bmrbp")
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Platforms"]
-polygon = PackedVector2Array(-370, -88, -365, -65, -360, -54, -350, -41, -333, -28, -310, -15, -276, -8, -218, -4, -212, -10, -212, 10, -412, 10, -412, -93, -375, -93)
